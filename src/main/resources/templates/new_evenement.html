@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1>Ajouter evenement</h1>
+        <hr>
+        <h2>Enregistrer evenement</h2>
+
+        <form action="#" th:action="@{/saveEvenement}" th:object ="${evenement}", method="POST">
+            <input type="text" th:field="*{titre}"
+            placeholder="Evenement Titre" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{description}"
+            placeholder="Evenement Description" class="form-control mb-4 col-4">
+            <input type="date" th:field="*{date}"
+            placeholder="Evenement Date" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{localisation}"
+            placeholder="Evenement Localisation" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{categorie}"
+            placeholder="Evenement Categorie" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{etat}"
+            placeholder="Evenement Etat" class="form-control mb-4 col-4">
+            <button type="submit" class="btn btn-info col-2">Enregistrer</button>
+        </form>
+    </div>
+
+</body>
+</html>
