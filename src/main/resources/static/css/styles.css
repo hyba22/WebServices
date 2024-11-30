@@ -1,0 +1,175 @@
+/* @charset "ISO-8859-1";
+
+body {
+            font-family: Arial, sans-serif;
+            background-color: #0e2433;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #0e2433;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #45b6fe;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #0e2433;
+        }
+
+        input[type="submit"] {
+            background-color: #45b6fe;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .bg-image-vertical {
+            position: relative;
+            overflow: hidden;
+            background-repeat: no-repeat;
+            background-position: right center;
+            background-size: auto 100%;
+            }
+            
+            @media (min-width: 1025px) {
+            .h-custom-2 {
+            height: 100%;
+            }
+            }
+
+        .message {
+            background-color: #45b6fe;
+            color: white;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+        } */
+  
+
+
+
+
+
+        .bg-image-vertical {
+            position: relative;
+            overflow: hidden;
+            background-image: url('/css/planificationgestion.jpg'); 
+            background-repeat: no-repeat;
+            background-position: center center; 
+            background-size: cover;  
+        }
+        
+        .form-label {
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+          }
+        
+        .h-custom-2 {
+            height: 100vh;
+        }
+        
+        .btn-custom {
+            background-color: #363fb9;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .btn-custom:hover {
+            background-color: #0714c7;
+        }
+        
+        /* Modification des marges pour rapprocher l'image et le formulaire */
+        @media (max-width: 768px) {
+            .h-custom-2 {
+                height: auto;
+            }
+        
+            .form-outline {
+                margin-bottom: 2rem;
+            }
+        
+            .btn-custom {
+                font-size: 1rem;
+            }
+        
+            .bg-image-vertical {
+                background-position: center center; /* L'image reste centrée verticalement */
+                background-size: cover;
+            }
+        
+            .col-sm-6 {
+                padding: 0;
+            }
+        }
+        
+        /* Medium to large screen styles */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .col-sm-6 {
+                padding: 0 1rem;
+            }
+        
+            .form-outline {
+                margin-bottom: 1.5rem;
+            }
+        
+            .btn-custom {
+                font-size: 1.1rem;
+            }
+        
+            .bg-image-vertical {
+                background-position: center center; /* L'image est centrée */
+                background-size: cover;
+            }
+        }
+        
+        /* Large screen styles */
+        @media (min-width: 1025px) {
+            .h-custom-2 {
+                height: 100%;
+            }
+        
+            .col-sm-6 {
+                padding: 0 2rem;  /* Augmenter l'espacement pour avoir plus d'espace entre le formulaire et l'image */
+            }
+        
+            .bg-image-vertical {
+                background-position: center center; /* Centrer l'image verticalement */
+                background-size: cover; /* L'image s'agrandit pour couvrir toute la section */
+            }
+        
+            /* Ajout d'un padding au-dessus du formulaire pour ajuster sa position */
+            .d-flex {
+                padding-top: 10rem; /* Ajuster la distance entre le formulaire et le haut de l'écran */
+            }
+        }
+        

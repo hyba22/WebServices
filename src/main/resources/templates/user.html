@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Couleur de fond claire */
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #0078d4; /* Bleu vif */
+        }
+
+        .navbar-brand {
+            color: #fff !important;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .navbar-brand:hover {
+            color: #e8e8e8 !important;
+        }
+
+        .logout-btn {
+            color: #f8d7da !important;
+            font-weight: bold;
+        }
+
+        .logout-btn:hover {
+            color: #f5b5b8 !important;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .card {
+            background-color: #ffffff; /* Fond blanc */
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+        }
+
+        .card-title {
+            color: #0078d4; /* Bleu vif */
+        }
+
+        .btn-primary {
+            background-color: #0078d4;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #005bb5;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">User Dashboard</a>
+            <div class="d-flex">
+                <a class="btn btn-link logout-btn" th:href="@{/logout}" sec:authorize="isAuthenticated">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="container">
+        <h2 class="text-center mb-4" style="color: #0078d4;">Welcome, [[${user.getFullname()}]]</h2>
+        <div class="row g-4">
+            <!-- Card 1 -->
+            <div class="col-md-4">
+                <div class="card p-3 text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Your Events</h5>
+                        <p class="card-text">You have 3 upcoming events this week. Check them out and prepare to enjoy the experience!</p>
+                        <a href="#" class="btn btn-primary">View Events</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="col-md-4">
+                <div class="card p-3 text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Account Settings</h5>
+                        <p class="card-text">Update your profile information, change your password, or adjust your notification preferences.</p>
+                        <a href="#" class="btn btn-primary">Edit Profile</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="col-md-4">
+                <div class="card p-3 text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Support</h5>
+                        <p class="card-text">Need assistance? Contact our support team for help with your account or events.</p>
+                        <a href="#" class="btn btn-primary">Contact Support</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Event Management. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
