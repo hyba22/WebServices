@@ -40,6 +40,18 @@
                                     <label class="form-label" for="password">Mot de passe</label>
                                 </div>
 
+                                <div class="mb-4">
+                                    <label class="form-label">Sélectionnez votre rôle :</label>
+                                    <div class="form-check form-check-inline">
+                                        <input th:field="*{role}" type="radio" id="role_creator" name="role" value="CREATOR" class="form-check-input" required />
+                                        <label class="form-check-label" for="role_creator">Créateur d'événement</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input th:field="*{role}" type="radio" id="role_participant" name="role" value="PARTICIPANT" class="form-check-input" required />
+                                        <label class="form-check-label" for="role_participant">Participant</label>
+                                    </div>
+                                </div>
+
                                 <div class="pt-1 mb-4">
                                     <button type="submit" class="btn btn-custom btn-lg btn-block">S'inscrire</button>
                                 </div>
