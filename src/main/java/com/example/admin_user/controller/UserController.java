@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +22,6 @@ import com.example.admin_user.repositories.UserRepository;
 import com.example.admin_user.service.UserService;
 
 import jakarta.validation.Valid;
-
-import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -40,7 +38,8 @@ public class UserController {
 	private UserService userService;
 
 
-
+ @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
 
@@ -53,7 +52,7 @@ public class UserController {
         return "userstab";
     }
 
-    //Adding new events
+    //Adding new user
     @GetMapping("/addUser")
     public String showAddPage(Model model) {
         UserDto userDto = new UserDto();
@@ -63,25 +62,24 @@ public class UserController {
 
     
     @PostMapping("/addUser")
-    public String addNewEvent (@Valid @ModelAttribute UserDto userDto, BindingResult result){
-
+    public String addNewEvent(@Valid @ModelAttribute UserDto userDto, BindingResult result) {
         if (result.hasErrors()) {
             System.out.println(result.getAllErrors());
             return "addUser";
         }
-
+    
         User user = new User();
-        user.setEmail(userDto. getEmail());
-        user.setPassword(userDto.getPassword());
-        user.setRole(userDto.getRole());
+        user.setEmail(userDto.getEmail());
         user.setFullname(userDto.getFullname());
-
+        user.setRole(userDto.getRole());
+        // Encode the password before saving
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+    
         userRepository.save(user);
     
-       
         return "redirect:/userstab";
     }
-
+    
     // Show form for updating an existing event
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(Model model, @PathVariable long id){
@@ -112,13 +110,15 @@ public class UserController {
             return "update_user";
         }
 
-        // Fetch the existing event
+        // Fetch the existing user
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + id));
 				user.setEmail(userDto. getEmail());
 				user.setPassword(userDto.getPassword());
 				user.setRole(userDto.getRole());
 				user.setFullname(userDto.getFullname());
+        // Encode the password before updating
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         userRepository.save(user);
 

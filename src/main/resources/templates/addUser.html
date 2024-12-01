@@ -24,7 +24,7 @@
                 <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Email</label>
                     <div class="col-sm-8">
-                        <input class="form-control" th:field="${userDto.email}" />
+                        <input class="email" th:field="${userDto.email}" />
                         <p th:if="${#fields.hasErrors('email')}" th:errorclass="text-danger" th:errors="${userDto.email}"></p>
                     </div>
                 </div>
@@ -34,8 +34,8 @@
                 <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Password</label>
                     <div class="col-sm-8">
-                        <input type="form-control" class="form-control" th:field="${userDto.password}" />
-                        <p th:if="${#fields.hasErrors('Password')}" th:errorclass="text-danger" th:errors="${userDto.password}"></p>
+                        <input type="password" class="form-control" th:field="${userDto.password}" />
+                        <p th:if="${#fields.hasErrors('password')}" th:errorclass="text-danger" th:errors="${userDto.password}"></p>
                     </div>
                 </div>
 
@@ -44,8 +44,8 @@
                     <label class="col-sm-4 col-form-label">Role</label>
                     <div class="col-sm-8">
                         <select class="form-select" th:field="${userDto.role}">
-                            <option value="Créateur">Créateur</option>
-                            <option value="Participant">Participant</option>
+                            <option value="CREATOR">Créateur</option>
+                            <option value="PARTICIPANT">Participant</option>
                         </select>
                         <p th:if="${#fields.hasErrors('role')}" th:errorclass="text-danger" th:errors="${userDto.role}"></p>
                     </div>
