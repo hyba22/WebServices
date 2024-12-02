@@ -4,6 +4,7 @@ package com.webservices.projectweb.controller;
 import com.webservices.projectweb.dto.EvenementDto;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.ui.Model;
 import com.webservices.projectweb.model.Evenement;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 
@@ -25,6 +27,9 @@ public class EvenementController {
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
+
+
+
 
     // Reading data from database
     @GetMapping({"","/"})
@@ -43,8 +48,7 @@ public class EvenementController {
     }
 
     @PostMapping("/addEvent")
-    public String addNewEvent (@Valid @ModelAttribute EvenementDto evenementDto, BindingResult result){
-
+    public String addNewEvent (@Valid @ModelAttribute EvenementDto evenementDto, BindingResult result,Model model){
         if (result.hasErrors()) {
             System.out.println(result.getAllErrors());
             return "addEvent";
@@ -59,6 +63,8 @@ public class EvenementController {
         evenement.setLocalisation(evenementDto.getLocalisation());
 
         evenementRepository.save(evenement);
+        model.addAttribute("success", true);
+
         // Send WebSocket notification
         messagingTemplate.convertAndSend("/topic/notifications", "New event added: " + evenement.getTitre());
         return "redirect:/evenements";
@@ -90,7 +96,8 @@ public class EvenementController {
     public String updateEvenement(
             @PathVariable long idevent,
             @Valid @ModelAttribute EvenementDto evenementDto,
-            BindingResult result) {
+            BindingResult result,
+            Model model) {
         if (result.hasErrors()) {
             return "update_evenement";
         }
@@ -104,29 +111,34 @@ public class EvenementController {
         evenement.setCategorie(evenementDto.getCategorie());
         evenement.setDescription(evenementDto.getDescription());
         evenement.setLocalisation(evenementDto.getLocalisation());
-
         evenementRepository.save(evenement);
+        model.addAttribute("success", true);
         // Send WebSocket notification
         messagingTemplate.convertAndSend("/topic/notifications", "Event updated: " + evenement.getTitre());
-
-
         return "redirect:/evenements";
     }
 
     @GetMapping("/delete")
-    public String delete(@RequestParam long idevent){
+    public String delete(@RequestParam long idevent, Model model){
         try{
             Evenement evenement = evenementRepository.findById(idevent)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid event ID: " + idevent));
             // delete event
             evenementRepository.delete(evenement);
+            model.addAttribute("success", true);
             // Send WebSocket notification
-            messagingTemplate.convertAndSend("/topic/notifications", "Event deleted: " + evenement.getTitre());
-        }catch(Exception e){
+            messagingTemplate.convertAndSend("/topic/notifications", "Event deleted: " + evenement.getTitre());        }catch(Exception e){
             System.out.println("Exception : " + e.getMessage());
         }
 
         return "redirect:/evenements";
     }
 
+    // to test if web socket messages are working in the backend
+    @GetMapping("/test-notification")
+    @ResponseBody
+    public String sendTestNotification() {
+        messagingTemplate.convertAndSend("/topic/notifications", "Test notification from the backend");
+        return "Notification sent successfully!";
+    }
 }
