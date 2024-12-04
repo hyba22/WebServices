@@ -49,4 +49,9 @@ public class EvenementController {
         this.evenementService.deleteEvenementById(idevenet);
         return "redirect:/";
     }
+
+    @GetMapping("/accueil.html")
+    public String afficherAccueil() {
+        return "accueil"; // Correspond au fichier accueil.html dans le dossier templates
+    }
 }

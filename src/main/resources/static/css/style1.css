@@ -1,0 +1,503 @@
+@import url('https://fonts.googleapis.com/css2?family=Miniver&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+img {
+    width: 100%;
+    height: auto; /* Pour une meilleure réactivité */
+}
+
+.section-title {
+   text-align: center;
+   padding: 60px 0 100px;
+   text-transform: uppercase;
+   font-size: 1.3rem;
+}
+
+.section-title::after {
+   content: "";
+   width: 80px;
+   height: 5px;
+   display: block;
+   margin: 10px auto 0;
+   border-radius: 30%;
+   background: #3648ac;
+}
+
+header {
+    position: fixed;
+    width: 100%;
+    z-index: 5;
+    background: darkblue;
+}
+
+header .navbar {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar .nav-logo .text {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bolder;
+}
+
+.navbar .nav-menu {
+    display: flex;
+    gap: 10px;
+}
+
+.navbar .nav-menu .nav-link {
+    padding: 10px 18px;
+    color: #ffffff;
+    border-radius: 0 20%;
+    transition: 0.3s ease;
+}
+
+.navbar .nav-menu .nav-link:hover {
+    color: #3648ac;
+    background: white;
+}
+
+.navbar :where(#menu-close-button, #menu-open-button) {
+    display: none;
+}
+
+.ev1-section {
+    min-height: 100vh;
+    background: #ffffff;
+}
+
+.ev1-section .section-content {
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    color: #3648ac;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Permet d'adapter la mise en page */
+}
+
+.ev1-section .ev1-details .title {
+    font-size: 3rem;
+    color: #3648ac;
+    font-family: "Miniver", sans-serif;
+    margin: 50px auto 0; /* Ajustement pour le centrer */
+    text-align: center;
+}
+
+.ev1-section .ev1-details .subtitle {
+    margin-top: 8px;
+    max-width: 100%; /* Pour s'adapter aux écrans plus petits */
+    font-size: 2rem;
+    font-weight: lighter;
+    text-align: center;
+}
+
+.ev1-section .ev1-details .description {
+    max-width: 100%; /* Pour s'adapter aux écrans plus petits */
+    margin: 24px 0 40px;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.ev1-section .ev1-details .buttons {
+    display: flex;
+    gap: 23px;
+    justify-content: center;
+}
+
+.ev1-section .ev1-details .button {
+    padding: 10px 26px;
+    border: 2px solid transparent;
+    color: #ffffff;
+    border-radius: 10px 0;
+    background: #3648ac;
+    font-weight: 200;
+    transition: 0.3s ease;
+}
+
+.ev1-section .ev1-details .button:hover,
+.ev1-section .ev1-details .connecter {
+    color: #3648ac;
+    border-color: #3648ac;
+    background: transparent;
+}
+
+.ev1-section .ev1-image-wrapper {
+    max-width: 500px;
+    margin: 20px auto; /* Pour centrer l'image */
+}
+
+.about-section {
+   padding: 120px 0;
+   background: rgb(255, 255, 255);
+}
+
+.about-section .section-content {
+   display: flex;
+   gap: 50px;
+   align-items: center;
+   justify-content: space-between;
+}
+
+.about-section .about-image-wrapper .about-image {
+   width: 400px;
+   height: 400px;
+   object-fit: cover;
+   border-radius: 50%;
+}
+
+.about-section .about-details .section-title {
+   padding: 0;
+}
+
+.about-section .about-details .text {
+   line-height: 30px;
+   margin: 50px 0 30px;
+   text-align: center;
+   font-size: var(--font-size-m);
+}
+
+.about-section .social-link-list {
+   display: flex;
+   gap: 25px;
+   justify-content: center;
+}
+
+.about-section .social-link-list .social-link {
+   color: #3648ac;
+   font-size: 2.3rem;
+   transition: 0.2s ease;
+}
+
+.about-section .social-link-list .social-link:hover {
+   color: blueviolet;
+}
+
+.menu-section {
+   color: #000;
+   background: rgb(255, 255, 255);
+   padding: 50px 0 100px;
+}
+
+.menu-section .ev-list {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 110px;
+   align-items: center;
+   justify-content: space-between;
+}
+
+.menu-section .ev-list .ev-item {
+   display: flex;
+   align-items: center;
+   text-align: center;
+   flex-direction: column;
+   justify-content: space-between;
+   width: calc(100% / 3 - 110px);
+}
+
+.menu-section .ev-list .ev-item .ev-image {
+   max-width: 83%;
+   aspect-ratio: 1;
+   margin-bottom: 15px;
+   object-fit: contain;
+}
+
+.menu-section .ev-list .ev-item .name {
+   margin: 12px 0;
+   font-size: 1rem;
+   font-weight: 600;
+}
+
+.menu-section .ev-list .ev-item .text {
+   font-size: 0.9rem;
+}
+
+.contact-section {
+    padding: 50px 0 100px;
+}
+
+.contact-section .contact {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.contact-section .contact-list .contact-icon {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+    align-items: center;
+}
+
+.contact-section .contact-form .form-input {
+    width: 100%;
+    height: 50px;
+    padding: 0 12px;
+    outline: none;
+    margin-bottom: 16px;
+    background: white;
+    border-radius: 5%;
+    border: 2px solid gray;
+}
+
+.contact-section .contact-form {
+    max-width: 50%;
+}
+
+.contact-section .contact-form .form-input:focus {
+    border-color: #3648ac;
+}
+
+.contact-section .contact-form textarea {
+    height: 100px;
+    padding: 12px;
+    resize: vertical;
+}
+
+.contact-section .contact-form .submit-button {
+    padding: 10px 26px;
+    margin-top: 10px;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+    background: #3648ac;
+    border-radius: 10%;
+    border: 2px solid #3648ac;
+    transition: 0.3s ease;
+}
+
+.contact-section .contact-form .submit-button:hover {
+    color: #3648ac;
+    background: transparent;
+}
+
+.footer-section {
+    padding: 20px 0;
+    background: darkblue;
+}
+
+.footer-section .section-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer-section :where(.copyright-text, .social-link, .policy-link) {
+    color: white;
+    transition: 0.2s ease;
+}
+
+.footer-section .social-link-list {
+    display: flex;
+    gap: 25px;
+}
+
+.footer-section .social-link-list .social-link {
+    font-size: 18px;
+}
+
+.footer-section .social-link-list .social-link:hover,
+.footer-section .policy-text .policy-link:hover
+ {
+    color: #3648ac;
+}
+
+.footer-section .policy-text .separator {
+    margin: 0 5px;
+    color: white;
+}
+
+/* Styles pour les petits écrans (mobiles) */
+@media (max-width: 768px) {
+   
+    .navbar .nav-logo .text {
+        font-size: 0.8rem;
+        
+    }
+    .navbar .nav-menu {
+        flex-direction: column;
+        gap: 2px;
+        align-items: center;
+        font-size: 0.5rem;
+    }
+
+    .ev1-section .section-content {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .ev1-section .ev1-details .title {
+        margin-top: 100px;
+        font-size: 2rem;
+        align-items: center;
+        margin-right: 30px;
+    }
+
+    .ev1-section .ev1-details .subtitle {
+        font-size: 1.5rem;
+        margin-right: 50px;
+    }
+    .ev1-section .ev1-details .description {
+        font-size: 1rem;
+        margin-right: 50px;
+    }
+
+    .ev1-section .section-content .ev1-details .buttons {
+        height: 65px;
+        display: flex;
+        gap: 1px;
+        
+    }
+
+    .ev1-section .section-content .ev1-details .buttons .button{
+        margin-right: 50px;
+        font-size: 0.6rem;
+        height: 50px;
+        width: 90px;
+    }
+    .menu-section .ev-list {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .menu-section .ev-list .ev-item {
+        width: 100%;
+    }
+
+    .about-section .section-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-section .section-content .about-details .section-title {
+        margin-left: 50px;
+    }
+
+    .about-section .section-content .about-details p {
+        margin-left: 50px;
+    }
+
+    .about-section .section-content .about-details .social-link-list .social-link {
+        margin-left: 50px;
+    }
+
+    .menu-section .section-title {
+        margin-left: 50px;
+    }
+
+    .section-content .ev-list .ev-item .ev-image {
+        margin-left: 50px;
+    }
+
+    .section-content .ev-list .ev-item .name {
+        margin-left: 50px;
+    }
+
+    .section-content .ev-list .ev-item p {
+        margin-left: 50px;
+    }
+
+    .about-section .about-image-wrapper .about-image {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .contact-section .section-title {
+        margin-left: 50px;
+    }
+
+    .contact-section .contact .contact-list .contact-icon i {
+        margin-left: 50px;
+    }
+
+    .contact-section .contact form {
+        margin-top: 200px;
+        left: 0;
+        margin-right: 200px;
+    }
+
+    .footer-section {
+        width: 600px;
+        
+    }
+
+    .footer-section .section-content .copyright-text {
+        font-size: 0.8rem;
+    }
+
+    .footer-section .section-content .social-link-list .social-link i{
+        font-size: 0.8rem;
+        
+    }
+
+    .footer-section .section-content .policy-text {
+        font-size: 0.8rem;
+        
+    }
+
+   
+}
+
+/* Styles pour les écrans moyens (tablettes) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .ev1-section .ev1-details .title {
+        font-size: 2.5rem;
+    }
+
+    .menu-section .ev-list {
+        gap: 40px;
+    }
+
+    .menu-section .ev-list .ev-item {
+        width: calc(100% / 2 - 20px);
+    }
+
+    .about-section .section-content {
+        gap: 20px;
+    }
+
+    .contact-section .contact {
+        gap: 30px;
+    }
+}
+
+/* Styles pour les grands écrans (ordinateurs) */
+@media (min-width: 1025px) {
+    .navbar .nav-menu {
+        gap: 20px;
+    }
+
+    .menu-section .ev-list {
+        gap: 110px;
+    }
+
+    .menu-section .ev-list .ev-item {
+        width: calc(100% / 3 - 110px);
+    }
+}
+
+
