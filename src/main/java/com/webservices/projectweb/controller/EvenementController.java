@@ -1,10 +1,10 @@
 package com.webservices.projectweb.controller;
 
-
 import com.webservices.projectweb.dto.EvenementDto;
+import com.webservices.projectweb.model.Notification;
+import com.webservices.projectweb.repository.NotificationRepository;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.ui.Model;
 import com.webservices.projectweb.model.Evenement;
@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -23,12 +25,15 @@ public class EvenementController {
 
     @Autowired
     private EvenementRepository evenementRepository;
-
-
+    
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
+    @Autowired
+    private NotificationRepository notificationRepository;
 
+    // variable to change the check if the user is subscribed or not
+    private boolean isSubscribed = false;
 
 
     // Reading data from database
@@ -39,7 +44,7 @@ public class EvenementController {
         return "index";
     }
 
-    //Adding new events
+    //Show adding new events
     @GetMapping("/addEvent")
     public String showAddPage(Model model) {
         EvenementDto evenementDto = new EvenementDto();
@@ -47,13 +52,13 @@ public class EvenementController {
         return "addEvent";
     }
 
+    //Create method
     @PostMapping("/addEvent")
     public String addNewEvent (@Valid @ModelAttribute EvenementDto evenementDto, BindingResult result,Model model){
         if (result.hasErrors()) {
             System.out.println(result.getAllErrors());
             return "addEvent";
         }
-
         Evenement evenement = new Evenement();
         evenement.setTitre(evenementDto.getTitre());
         evenement.setDate(evenementDto.getDate());
@@ -61,12 +66,16 @@ public class EvenementController {
         evenement.setCategorie(evenementDto.getCategorie());
         evenement.setDescription(evenementDto.getDescription());
         evenement.setLocalisation(evenementDto.getLocalisation());
-
         evenementRepository.save(evenement);
         model.addAttribute("success", true);
 
-        // Send WebSocket notification
-        messagingTemplate.convertAndSend("/topic/notifications", "New event added: " + evenement.getTitre());
+        // Send WebSocket notificationans storing in database
+        String notificationMessage=" Un nouveau événement est ajouté: " + evenement.getTitre();
+        messagingTemplate.convertAndSend("/topic/notifications", notificationMessage);
+        Notification notification = new Notification();
+        notification.setMessage(notificationMessage);
+        notification.setTimestamp(LocalDateTime.now());
+        notificationRepository.save(notification);
         return "redirect:/evenements";
     }
 
@@ -91,7 +100,7 @@ public class EvenementController {
         return "update_evenement";
     }
 
-
+  // Update Post method
     @PostMapping("/updateEvenement/{idevent}")
     public String updateEvenement(
             @PathVariable long idevent,
@@ -102,7 +111,6 @@ public class EvenementController {
             return "update_evenement";
         }
 
-        // Fetch the existing event
         Evenement evenement = evenementRepository.findById(idevent)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid event ID: " + idevent));
         evenement.setTitre(evenementDto.getTitre());
@@ -113,13 +121,21 @@ public class EvenementController {
         evenement.setLocalisation(evenementDto.getLocalisation());
         evenementRepository.save(evenement);
         model.addAttribute("success", true);
-        // Send WebSocket notification
-        messagingTemplate.convertAndSend("/topic/notifications", "Event updated: " + evenement.getTitre());
+        // Send WebSocket notification and saving in database
+        String notificationMessage ="Event : " + evenement.getTitre() + "est à jour!";
+        messagingTemplate.convertAndSend("/topic/notifications",notificationMessage );
+        Notification notification = new Notification();
+        notification.setMessage(notificationMessage);
+        notification.setTimestamp(LocalDateTime.now());
+        notificationRepository.save(notification);
         return "redirect:/evenements";
     }
 
+    // Delete method
+
     @GetMapping("/delete")
     public String delete(@RequestParam long idevent, Model model){
+
         try{
             Evenement evenement = evenementRepository.findById(idevent)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid event ID: " + idevent));
@@ -127,7 +143,13 @@ public class EvenementController {
             evenementRepository.delete(evenement);
             model.addAttribute("success", true);
             // Send WebSocket notification
-            messagingTemplate.convertAndSend("/topic/notifications", "Event deleted: " + evenement.getTitre());        }catch(Exception e){
+            String notificationMessage ="Event deleted: " + evenement.getTitre();
+            messagingTemplate.convertAndSend("/topic/notifications",notificationMessage );
+            Notification notification = new Notification();
+            notification.setMessage(notificationMessage);
+            notification.setTimestamp(LocalDateTime.now());
+            notificationRepository.save(notification);
+            }catch(Exception e){
             System.out.println("Exception : " + e.getMessage());
         }
 
@@ -141,4 +163,28 @@ public class EvenementController {
         messagingTemplate.convertAndSend("/topic/notifications", "Test notification from the backend");
         return "Notification sent successfully!";
     }
+
+    @GetMapping({"/eventsViews"})
+    public String EvenementList(Model model) {
+        List<Evenement> evenements = evenementRepository.findAll(Sort.by(Sort.Direction.DESC, "idevent"));
+        model.addAttribute("evenements", evenements);
+        model.addAttribute("isSubscribed", isSubscribed);
+        return "view_events";
+    }
+
+    @GetMapping("/abonnerPage")
+    public String abonnerPage(RedirectAttributes redirectAttributes) {
+        isSubscribed = true; // Set subscription state
+        redirectAttributes.addFlashAttribute("notification", "Vous êtes maintenant abonné !");
+        return "redirect:/evenements/eventsViews"; // Redirect back to the events view
+    }
+
+    @GetMapping("/desabonnerPage")
+    public String desabonnerPage(RedirectAttributes redirectAttributes) {
+        isSubscribed = false; // Reset subscription state
+        redirectAttributes.addFlashAttribute("notification", "Vous vous êtes désabonné.");
+        return "redirect:/evenements/eventsViews"; // Redirect back to the events view
+    }
+
 }
+

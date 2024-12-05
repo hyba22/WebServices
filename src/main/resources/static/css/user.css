@@ -1,0 +1,54 @@
+/* Notification bell icon styles */
+#notification-bell {
+    position: relative;
+    display: inline-block;
+    margin-right: 20px; /* Add some spacing between the bell and the logout button */
+}
+
+#notification-bell img {
+    height: 24px;
+    width: 24px;
+}
+
+/* Notification count badge styles */
+#notification-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    border-radius: 50%;
+    padding: 2px 5px;
+    display: none; /* Hidden by default */
+}
+
+/* Notification dropdown menu styles */
+#notification-list {
+    position: absolute;
+    top: 40px; /* Adjust to align below bell */
+    right: 10px;
+    display: none; /* Hidden initially */
+    width: 350px; /* Increased width for a bigger dropdown */
+    max-height: 300px; /* Add max-height to allow scrolling */
+    overflow-y: auto; /* Enable vertical scrolling when content overflows */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    background: white;
+    border-radius: 5px;
+    z-index: 1000;
+    padding: 10px;
+}
+
+/* Dropdown list item style */
+#notification-list .dropdown-item {
+    color: black;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 14px;
+    text-align: left;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+#notification-list .dropdown-item:hover {
+    background-color: #f0f0f0;
+}

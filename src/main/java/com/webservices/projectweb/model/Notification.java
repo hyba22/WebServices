@@ -16,16 +16,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Notification {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idNotif;
+    private Long id;
 
-    private Boolean estVu;
-    private String type;
     private String message;
-    private LocalDateTime dateNotif;
 
-    public void getEstVu(boolean b) {
-    }
+    private LocalDateTime timestamp;
+
 }

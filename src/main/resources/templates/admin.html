@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.2/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <title>Event Management - Admin Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f5f7;
+            color: #333;
+        }
+
+        .header {
+            background-color: #0078d4;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #143952;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar a {
+            display: block;
+            color: #fff;
+            padding: 15px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            border-bottom: 1px solid #0e2c46;
+        }
+
+        .sidebar a:hover {
+            background-color: #0e2c46;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .content h2 {
+            color: #0078d4;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            background-color: #0078d4;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .button:hover {
+            background-color: #005bb5;
+        }
+
+        .logout {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logout a {
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .logout a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Event Management - Admin Dashboard</h1>
+    </div>
+
+    <div class="sidebar">
+        <a href="#">Dashboard</a>
+        <a th:href="@{/evenements}">Manage Events</a>
+        <a th:href="@{/userstab}">Users</a>
+        <a href="#">Reports</a>
+        <a href="#">Settings</a>
+        <div class="logout">
+            <a th:href="@{/logout}" sec:authorize="isAuthenticated">Logout</a>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2>Welcome, [[${user.getFullname()}]]</h2>
+        <div class="card">
+            <h3>Upcoming Events</h3>
+            <p>You have 5 upcoming events to manage.</p>
+            <a href="#" class="button">View Details</a>
+        </div>
+
+        <div class="card">
+            <h3>Recent Registrations</h3>
+            <p>20 new users registered in the past week.</p>
+            <a href="#" class="button">View Users</a>
+        </div>
+    </div>
+    <script>
+        // Initialize SockJS and Stomp
+        var socket = new SockJS('/ws'); // Matches your endpoint
+        var stompClient = Stomp.over(socket);
+
+        // Connect to the WebSocket server
+        stompClient.connect({}, function (frame) {
+            console.log("Connected: " + frame);
+
+
+            // Subscribe to notifications topic
+            stompClient.subscribe('/topic/notifications', function (notification) {
+                console.log("Notification received: ", notification.body);
+
+                Swal.fire({
+                    position: 'bottom-end',
+                    icon: 'success',
+                    title: 'Notification',
+                    text: notification.body,
+                    showConfirmButton: false,
+                    timer: 5000,
+                });
+            });
+        }, function (error) {
+            console.error("Error during WebSocket connection: ", error);
+        });
+    </script>
+
+</body>
+</html>
