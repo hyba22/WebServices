@@ -38,20 +38,21 @@
                 <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Password</label>
                     <div class="col-sm-8">
-                        <input class="password form-control" th:field="${userDto.password}" />
+                        <input class="password " th:field="${userDto.password}" />
                         <p th:if="${#fields.hasErrors('password')}" th:errorclass="text-danger" th:errors="${userDto.password}"></p>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Role</label>
                     <div class="col-sm-8">
-                        <select class="form-select" th:field="${userDto.role}">
-                            <option value="CREATOR">CREATOR</option>
-                            <option value="PARTICIPANT">PARTICIPANT</option>
+                        <select class="form-select" th:field="${userDto.role}" th:disabled="${isPersonnel}">
+                            <option value="CLIENT">Client</option>
+                            <option value="PERSONNEL">Personnel</option>
                         </select>
                         <p th:if="${#fields.hasErrors('role')}" th:errorclass="text-danger" th:errors="${userDto.role}"></p>
                     </div>
                 </div>
+                
 
                 <div class="row">
                     <div class="offset-sm-4 col-sm-4 d-grid">

@@ -41,13 +41,14 @@
 
                                 <div class="mb-4">
                                     <label class="form-label">Sélectionnez votre rôle :</label>
+                                    
                                     <div class="form-check form-check-inline">
-                                        <input th:field="*{role}" type="radio" id="role_creator" name="role" value="CREATOR" class="form-check-input" required />
-                                        <label class="form-check-label" for="role_creator">Créateur d'événement</label>
+                                        <input th:field="*{role}" type="radio" id="role_client" name="role" value="CLIENT" class="form-check-input" required />
+                                        <label class="form-check-label" for="role_client">Client</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input th:field="*{role}" type="radio" id="role_participant" name="role" value="PARTICIPANT" class="form-check-input" required />
-                                        <label class="form-check-label" for="role_participant">Participant</label>
+                                        <input th:field="*{role}" type="radio" id="role_personnel" name="role" value="PERSONNEL" class="form-check-input" required />
+                                        <label class="form-check-label" for="role_personnel">Personnel</label>
                                     </div>
                                 </div>
 

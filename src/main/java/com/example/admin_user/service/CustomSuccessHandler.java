@@ -24,9 +24,9 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 			response.sendRedirect("/admin-page");
 		} else if (roles.orElse("").equals("USER")) {
 			response.sendRedirect("/user-page");
-		} else if (roles.orElse("").equals("PARTICIPANT")) {
-			response.sendRedirect("/user-page");
-		} else if (roles.orElse("").equals("CREATOR")) {
+		} else if (roles.orElse("").equals("PERSONNEL")) {
+			response.sendRedirect("/personnel-page");
+		} else if (roles.orElse("").equals("CLIENT")) {
 			response.sendRedirect("/user-page");
 		} else {
 			response.sendRedirect("/error");

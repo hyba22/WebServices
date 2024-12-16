@@ -44,88 +44,133 @@ public class UserController {
 
 
 
-        // Reading data from database
-    @GetMapping({"","/userstab"})
-    public String showEvenementList(Model model) {
-        List<User> users = userRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
-        model.addAttribute("users",users);
-        return "userstab";
+    @GetMapping({"", "/userstab"})
+public String showEvenementList(Model model, Principal principal) {
+    String username = principal.getName();
+    User currentUser = userRepository.findByEmail(username);
+
+    List<User> users;
+
+    if ("PERSONNEL".equals(currentUser.getRole())) {
+        users = userRepository.findByRole("CLIENT");
+        model.addAttribute("dashboardUrl", "/personnel-page"); 
+    } else {
+        users = userRepository.findAll(); 
+        model.addAttribute("dashboardUrl", "/admin-page");
     }
 
-    //Adding new user
-    @GetMapping("/addUser")
-    public String showAddPage(Model model) {
-        UserDto userDto = new UserDto();
-        model.addAttribute("userDto",userDto);
+    model.addAttribute("users", users);
+    return "userstab";
+}
+
+
+    
+@GetMapping("/addUser")
+public String showAddPage(Model model, Principal principal) {
+    UserDto userDto = new UserDto();
+
+    String username = principal.getName();
+    User currentUser = userRepository.findByEmail(username);
+
+    if ("PERSONNEL".equals(currentUser.getRole())) {
+       
+        userDto.setRole("CLIENT");
+    }
+    
+    model.addAttribute("userDto", userDto);
+    return "addUser";
+}
+
+@PostMapping("/addUser")
+public String addNewUser(@Valid @ModelAttribute UserDto userDto, BindingResult result, Principal principal) {
+    if (result.hasErrors()) {
+        System.out.println(result.getAllErrors());
         return "addUser";
     }
 
-    
-    @PostMapping("/addUser")
-    public String addNewEvent(@Valid @ModelAttribute UserDto userDto, BindingResult result) {
-        if (result.hasErrors()) {
-            System.out.println(result.getAllErrors());
-            return "addUser";
-        }
-    
-        User user = new User();
-        user.setEmail(userDto.getEmail());
-        user.setFullname(userDto.getFullname());
-        user.setRole(userDto.getRole());
-        // Encode the password before saving
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-    
-        userRepository.save(user);
-    
-        return "redirect:/userstab";
+    // Vérifier si l'utilisateur connecté est un PERSONNEL
+    String username = principal.getName();
+    User currentUser = userRepository.findByEmail(username);
+
+    if ("PERSONNEL".equals(currentUser.getRole())) {
+        userDto.setRole("CLIENT");
     }
-    
-    // Show form for updating an existing event
+
+    User user = new User();
+    user.setEmail(userDto.getEmail());
+    user.setFullname(userDto.getFullname());
+    user.setRole(userDto.getRole());
+    user.setPassword(passwordEncoder.encode(userDto.getPassword())); 
+
+    userRepository.save(user);
+
+    return "redirect:/userstab";
+}
+
+     
+
     @GetMapping("/showFormForUpdate/{id}")
-    public String showFormForUpdate(Model model, @PathVariable long id){
-        try{
-            User user = userRepository.findById(id).get();
-            model.addAttribute("user", user);
+    public String showFormForUpdate(Model model, @PathVariable long id, Principal principal) {
+        try {
+
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + id));
+    
             UserDto userDto = new UserDto();
-			user.setEmail(userDto.getEmail());
-			user.setPassword(userDto.getPassword());
-			user.setRole(userDto.getRole());
-			user.setFullname(userDto.getFullname());
-	
-            model.addAttribute("userDto",userDto);
-        }catch(Exception e){
-            System.out.println("Expection :" +e.getMessage());
+            userDto.setEmail(user.getEmail());
+            userDto.setPassword(user.getPassword());
+            userDto.setRole(user.getRole());
+            userDto.setFullname(user.getFullname());
+    
+            model.addAttribute("user", user);
+            model.addAttribute("userDto", userDto);
+            String currentUserRole = getCurrentUserRole(principal); 
+            model.addAttribute("isPersonnel", currentUserRole.equals("PERSONNEL") && user.getRole().equals("CLIENT"));
+    
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
             return "redirect:/userstab";
         }
         return "update_user";
     }
-
-
+    
     @PostMapping("/updateUser/{id}")
     public String updateUser(
             @PathVariable long id,
             @Valid @ModelAttribute UserDto userDto,
-            BindingResult result) {
+            BindingResult result,
+            Principal principal) {
+    
         if (result.hasErrors()) {
             return "update_user";
         }
-
-        // Fetch the existing user
+    
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + id));
-				user.setEmail(userDto. getEmail());
-				user.setPassword(userDto.getPassword());
-				user.setRole(userDto.getRole());
-				user.setFullname(userDto.getFullname());
-        // Encode the password before updating
+    
+        // Vérifier si l'utilisateur connecté est "PERSONNEL" et la cible est un CLIENT
+        String currentUserRole = getCurrentUserRole(principal);
+        if (currentUserRole.equals("PERSONNEL") && user.getRole().equals("CLIENT")) {
+            userDto.setRole(user.getRole()); // Ne pas autoriser le changement de rôle
+        }
+    
+        user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
+        user.setFullname(userDto.getFullname());
+        user.setRole(userDto.getRole());
+    
         userRepository.save(user);
-
-
-
+    
         return "redirect:/userstab";
     }
+    
+    private String getCurrentUserRole(Principal principal) {
+        User currentUser = userRepository.findByEmail(principal.getName());
+        return currentUser.getRole();
+    }
+    
+     
+
 
     @GetMapping("/delete")
     public String delete(@RequestParam long id){
@@ -174,6 +219,12 @@ public class UserController {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
 		model.addAttribute("user", userDetails);
 		return "admin";
+	}
+    @GetMapping("personnel-page")
+	public String personnelPage (Model model, Principal principal) {
+		UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+		model.addAttribute("user", userDetails);
+		return "personnel";
 	}
 
 }

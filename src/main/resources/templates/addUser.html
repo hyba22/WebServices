@@ -20,7 +20,6 @@
                     </div>
                 </div>
 
-
                 <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Email</label>
                     <div class="col-sm-8">
@@ -29,8 +28,6 @@
                     </div>
                 </div>
 
-
-                
                 <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Password</label>
                     <div class="col-sm-8">
@@ -39,19 +36,18 @@
                     </div>
                 </div>
 
-
                 <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Role</label>
                     <div class="col-sm-8">
-                        <select class="form-select" th:field="${userDto.role}">
-                            <option value="CREATOR">Créateur</option>
-                            <option value="PARTICIPANT">Participant</option>
+                        <select class="form-select" th:field="${userDto.role}" th:disabled="${userDto.role == 'PERSONNEL'}">
+                            
+
+                            <option value="PERSONNEL">Personnel</option>
+                            <option value="CLIENT">Client</option>
                         </select>
                         <p th:if="${#fields.hasErrors('role')}" th:errorclass="text-danger" th:errors="${userDto.role}"></p>
                     </div>
                 </div>
-
-               
 
                 <div class="row">
                     <div class="offset-sm-4 col-sm-4 d-grid">
